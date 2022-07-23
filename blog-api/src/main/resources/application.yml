@@ -1,0 +1,23 @@
+# 服务器
+server:
+  port: 8888
+
+# 数据源
+spring:
+  datasource:
+    # 采用druid
+    type: com.alibaba.druid.pool.DruidDataSource
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3307/blog_db?useUnicode=true&characterEncoding=UTF-8&serverTimeZone=UTC
+    username: root
+    password: 1234
+  application:
+    name: zirui_blog
+
+# mybatis-plus
+mybatis-plus:
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+  global-config:
+    db-config:
+      table-prefix: db_
