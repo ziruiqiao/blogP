@@ -17,8 +17,8 @@ import lombok.Data;
 @AllArgsConstructor
 public class Result {
 
-    private boolean success;
-    private int code;
+    private Boolean success;
+    private Integer code;
     private String msg;
     private Object data;
 
@@ -28,5 +28,9 @@ public class Result {
 
     public static Result fail(int code, String msg) {
         return new Result(false, code, msg, null);
+    }
+
+    public static Result fail(ErrorCode errorCode) {
+        return new Result(false, errorCode.getCode(), errorCode.getMsg(), null);
     }
 }

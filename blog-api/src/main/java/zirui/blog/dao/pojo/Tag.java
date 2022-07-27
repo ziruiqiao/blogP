@@ -28,7 +28,7 @@ public class Tag implements Serializable {
 
     private String avatar;
 
-    private String tag_name;
+    private String tagName;
 
 
 }

@@ -45,7 +45,7 @@ public class Sys_user implements Serializable {
     /**
      * 注册时间
      */
-    private Long create_date;
+    private Long createDate;
 
     /**
      * 是否删除
@@ -61,12 +61,12 @@ public class Sys_user implements Serializable {
     /**
      * 最后登录时间
      */
-    private Long last_login;
+    private Long lastLogin;
 
     /**
      * 手机号
      */
-    private String mobile_phone_number;
+    private String mobilePhoneNumber;
 
     /**
      * 昵称

@@ -17,7 +17,7 @@ import org.springframework.context.annotation.Configuration;
  * @date: 2022/7/23 16:29
  */
 @Configuration
-@MapperScan("zirui.blog.dao.mapper")
+@MapperScan("zirui/blog/dao/mapper")
 public class MybatisPlusConfig {
 
     @Bean
