@@ -60,7 +60,7 @@ public interface IArticleService extends IService<Article> {
      * @Author: Zirui Qiao
      * @Date: 2022/7/25 23:14
      */
-    Result findArticleById(Long id);
+    Result findArticleById(String id);
 
     /**
      * @Description: 发布文章
@@ -70,4 +70,15 @@ public interface IArticleService extends IService<Article> {
      * @Date: 2022/7/27 10:34
      */
     Result publish(ArticleParam articleParam);
+
+    /**
+     * @Description: 搜索文章
+     * @param search 搜索关键字
+     * @return: zirui.blog.vo.Result
+     * @Author: Zirui Qiao
+     * @Date: 2022/7/27 18:58
+     */
+    Result search(String search);
+
+    Result delArticleById(String id);
 }

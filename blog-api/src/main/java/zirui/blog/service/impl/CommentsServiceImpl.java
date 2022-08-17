@@ -36,7 +36,7 @@ public class CommentsServiceImpl implements CommentsService {
     @Autowired
     private ISys_userService sysUserService;
     @Override
-    public Result commentsByArticleId(Long id) {
+    public Result commentsByArticleId(String id) {
         /**
          * 1. 查询评论列表
          * 2. 根据id查询作者信息
@@ -55,7 +55,7 @@ public class CommentsServiceImpl implements CommentsService {
         CommentVo commentVo = CopyUtil.copyBean(comment,CommentVo.class);
         //时间格式化
         commentVo.setCreateDate(new DateTime(comment.getCreateDate()).toString("yyyy-MM-dd HH:mm"));
-        Long authorId = comment.getAuthorId();
+        String authorId = comment.getAuthorId();
         LoginUserVo userVo = sysUserService.findLoginUserVoById(authorId);
         commentVo.setAuthor(userVo);
         //评论的评论
@@ -64,14 +64,14 @@ public class CommentsServiceImpl implements CommentsService {
             commentVo.setChildren(commentVoList);
         //}
         if (comment.getLevel() > 1) {
-            Long toUid = comment.getToUid();
+            String toUid = comment.getToUid();
             LoginUserVo toUserVo = sysUserService.findLoginUserVoById(toUid);
             commentVo.setToUser(toUserVo);
         }
         return commentVo;
     }
 
-    private List<CommentVo> findCommentsByParentId(Long id) {
+    private List<CommentVo> findCommentsByParentId(String id) {
         LambdaQueryWrapper<Comment> queryWrapper = new LambdaQueryWrapper<>();
         queryWrapper.eq(Comment::getParentId,id);
         queryWrapper.eq(Comment::getLevel,2);
@@ -95,15 +95,15 @@ public class CommentsServiceImpl implements CommentsService {
         comment.setAuthorId(sysUser.getId());
         comment.setContent(commentParam.getContent());
         comment.setCreateDate(System.currentTimeMillis());
-        Long parent = commentParam.getParent();
-        if (parent == null || parent == 0) {
+        String parent = commentParam.getParent();
+        if (parent == null || parent == "0") {
             comment.setLevel(1);
         }else{
             comment.setLevel(2);
         }
-        comment.setParentId(parent == null ? 0 : parent);
-        Long toUserId = commentParam.getToUserId();
-        comment.setToUid(toUserId == null ? 0 : toUserId);
+        comment.setParentId(parent == null ? "0" : parent);
+        String toUserId = commentParam.getToUserId();
+        comment.setToUid(toUserId == null ? "0" : toUserId);
         this.commentMapper.insert(comment);
         return Result.success(null);
     }

@@ -1,7 +1,5 @@
 package zirui.blog.vo.params;
 
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import lombok.Data;
 import zirui.blog.vo.CategoryVo;
 import zirui.blog.vo.TagVo;
@@ -22,8 +20,8 @@ import java.util.List;
 public class ArticleParam {
     private String title;
     private String summary;
-    @JsonSerialize(using = ToStringSerializer.class)
-    private Long id;
+    //@JsonSerialize(using = ToStringSerializer.class)
+    private String id;
     private ArticleBodyParam body;
     private CategoryVo category;
     private List<TagVo> tags;

@@ -16,7 +16,7 @@ import java.util.List;
  * @since 2022-07-23
  */
 public interface ITagService extends IService<Tag> {
-    List<TagVo> findTagsByArticleId(Long articleId);
+    List<TagVo> findTagsByArticleId(String articleId);
 
     /**
      * @Description: 查询最热标签
@@ -34,4 +34,21 @@ public interface ITagService extends IService<Tag> {
      * @Date: 2022/7/27 10:15
      */
     Result findAll();
+
+    /**
+     * @Description: 查询所有文章标签detail
+     * @return: zirui.blog.vo.Result
+     * @Author: Zirui Qiao
+     * @Date: 2022/7/27 17:29
+     */
+    Result findAllDetail();
+
+    /**
+     * @Description: 根据id查找标签
+     * @param id id
+     * @return: zirui.blog.vo.Result
+     * @Author: Zirui Qiao
+     * @Date: 2022/7/27 18:09
+     */
+    Result findDetailById(String id);
 }

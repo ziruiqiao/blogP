@@ -1,12 +1,13 @@
 package zirui.blog.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import org.springframework.beans.factory.annotation.Autowired;
-import zirui.blog.dao.pojo.Tag;
-import zirui.blog.dao.mapper.TagMapper;
-import zirui.blog.service.ITagService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import zirui.blog.dao.mapper.TagMapper;
+import zirui.blog.dao.pojo.Tag;
+import zirui.blog.service.ITagService;
 import zirui.blog.util.CopyUtil;
 import zirui.blog.vo.Result;
 import zirui.blog.vo.TagVo;
@@ -28,9 +29,9 @@ public class TagServiceImpl extends ServiceImpl<TagMapper, Tag> implements ITagS
     private TagMapper tagMapper;
 
     @Override
-    public List<TagVo> findTagsByArticleId(Long articleId) {
+    public List<TagVo> findTagsByArticleId(String articleId) {
         // mp 无法进行多表查询
-        List<Tag> tags = tagMapper.findTagsByArticleId(articleId);
+        List<Tag> tags = tagMapper.findTagsByArticleId(Long.parseLong(articleId));
         return CopyUtil.copyList(tags, TagVo.class);
     }
 
@@ -47,8 +48,23 @@ public class TagServiceImpl extends ServiceImpl<TagMapper, Tag> implements ITagS
 
     @Override
     public Result findAll() {
+        LambdaQueryWrapper<Tag> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.select(Tag::getId, Tag::getTagName);
+        List<Tag> tags = tagMapper.selectList(queryWrapper);
+
+        return Result.success(CopyUtil.copyList(tags, TagVo.class));
+    }
+
+    @Override
+    public Result findAllDetail() {
         List<Tag> tags = tagMapper.selectList(new QueryWrapper<>());
 
         return Result.success(CopyUtil.copyList(tags, TagVo.class));
+    }
+
+    @Override
+    public Result findDetailById(String id) {
+        Tag tag = tagMapper.selectById(id);
+        return Result.success(CopyUtil.copyBean(tag, TagVo.class));
     }
 }

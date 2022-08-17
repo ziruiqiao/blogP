@@ -14,7 +14,7 @@ import zirui.blog.vo.Result;
  * @since 2022-07-23
  */
 public interface ISys_userService extends IService<Sys_user> {
-    Sys_user findUserById(Long id);
+    Sys_user findUserById(String id);
 
     /**
      * @Description: 根据用户名 密码查找用户
@@ -51,5 +51,5 @@ public interface ISys_userService extends IService<Sys_user> {
      * @Author: Zirui Qiao
      * @Date: 2022/7/26 14:23
      */
-    LoginUserVo findLoginUserVoById(Long toUid);
+    LoginUserVo findLoginUserVoById(String toUid);
 }

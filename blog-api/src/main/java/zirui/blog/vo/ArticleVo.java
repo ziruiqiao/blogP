@@ -1,7 +1,5 @@
 package zirui.blog.vo;
 
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import lombok.Data;
 
 import java.util.List;
@@ -19,8 +17,8 @@ import java.util.List;
 @Data
 public class ArticleVo {
 
-    @JsonSerialize(using = ToStringSerializer.class)
-    private Long id;
+    ////@JsonSerialize(using = ToStringSerializer.class)
+    private String id;
 
     private String title;
 
@@ -36,7 +34,7 @@ public class ArticleVo {
      */
     private String createDate;
 
-    private String author;
+    private Author author;
 
     private ArticleBodyVo body;
 

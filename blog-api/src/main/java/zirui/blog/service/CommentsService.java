@@ -21,7 +21,7 @@ public interface CommentsService {
      * @Author: Zirui Qiao
      * @Date: 2022/7/26 13:29
      */
-    Result commentsByArticleId(Long id);
+    Result commentsByArticleId(String id);
 
     /**
      * @Description: 获取评论

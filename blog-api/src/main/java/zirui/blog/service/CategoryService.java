@@ -3,8 +3,6 @@ package zirui.blog.service;
 import zirui.blog.vo.CategoryVo;
 import zirui.blog.vo.Result;
 
-import java.util.List;
-
 /**
  * Copyright (c) 2008-2024: Zirui Qiao
  * Project: blog-parent
@@ -23,7 +21,7 @@ public interface CategoryService {
      * @Author: Zirui Qiao
      * @Date: 2022/7/25 23:41
      */
-    CategoryVo findCategoryById(Long categoryId);
+    CategoryVo findCategoryById(String categoryId);
 
     /**
      * @Description: 查询所有文章类别
@@ -32,4 +30,21 @@ public interface CategoryService {
      * @Date: 2022/7/27 9:58
      */
     Result findAll();
+
+    /**
+     * @Description: 查询所有detail
+     * @return: zirui.blog.vo.Result
+     * @Author: Zirui Qiao
+     * @Date: 2022/7/27 17:25
+     */
+    Result findAllDetail();
+
+    /**
+     * @Description: 获取对应的分类
+     * @param id
+     * @return: zirui.blog.vo.Result
+     * @Author: Zirui Qiao
+     * @Date: 2022/7/27 18:00
+     */
+    Result categoryDetailById(String id);
 }

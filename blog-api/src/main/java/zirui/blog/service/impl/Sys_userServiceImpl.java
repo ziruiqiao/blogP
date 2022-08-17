@@ -31,7 +31,7 @@ public class Sys_userServiceImpl extends ServiceImpl<Sys_userMapper, Sys_user> i
 
 
     @Override
-    public Sys_user findUserById(Long id) {
+    public Sys_user findUserById(String id) {
         Sys_user sys_user = sysUserMapper.selectById(id);
         if(sys_user == null) {
             sys_user = new Sys_user();
@@ -78,11 +78,11 @@ public class Sys_userServiceImpl extends ServiceImpl<Sys_userMapper, Sys_user> i
     }
 
     @Override
-    public LoginUserVo findLoginUserVoById(Long id) {
+    public LoginUserVo findLoginUserVoById(String id) {
         Sys_user sysUser = sysUserMapper.selectById(id);
         if (sysUser == null){
             sysUser = new Sys_user();
-            sysUser.setId(1L);
+            sysUser.setId("1");
             sysUser.setAvatar("/static/user/user_2.png");
             sysUser.setNickname("zirui-blog");
         }

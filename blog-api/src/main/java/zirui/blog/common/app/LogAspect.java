@@ -42,21 +42,21 @@ public class LogAspect {
 
     }
 
-    private static String[] types = {"java.lang.Integer", "java.lang.Double",
+    private static String[] types = { "java.lang.Integer", "java.lang.Double",
             "java.lang.Float", "java.lang.Long", "java.lang.Short",
             "java.lang.Byte", "java.lang.Boolean", "java.lang.Char",
             "java.lang.String", "int", "double", "long", "short", "byte",
-            "boolean", "char", "float"};
+            "boolean", "char", "float" };
 
     @Around("pt()")
     public Object log(ProceedingJoinPoint point) throws Throwable {
 
         long beginTime = System.currentTimeMillis();
-        //执行方法
+        // 执行方法
         Object result = point.proceed();
-        //执行时长(毫秒)
+        // 执行时长(毫秒)
         long time = System.currentTimeMillis() - beginTime;
-        //保存日志
+        // 保存日志
         recordLog(point, time);
         return result;
     }
@@ -69,21 +69,23 @@ public class LogAspect {
         log.info("module:{}", logAnnotation.module());
         log.info("operation:{}", logAnnotation.operator());
 
-        //请求的方法名
+        // 请求的方法名
         String className = joinPoint.getTarget().getClass().getName();
         String methodName = signature.getName();
         log.info("request method:{}", className + "." + methodName + "()");
 
-//        //请求的参数
+        // //请求的参数
         Object[] args = joinPoint.getArgs();
-        String params = JSON.toJSONString(args[0]);
-        log.info("params:{}", params);
+        if (args.length > 0) {
+            String params = JSON.toJSONString(args[0]);
+            log.info("params:{}", params);
+        }
 
-        //获取request 设置IP地址
+        // 获取request 设置IP地址
         log.info("ip:{}", IpUtils.getIpAddr());
 
         // 打印request header和body
-        //printRequest(HttpContextUtils.getHttpServletRequest(), joinPoint);
+        // printRequest(HttpContextUtils.getHttpServletRequest(), joinPoint);
 
         log.info("execute time : {} ms", time);
         log.info("=====================log end================================");
@@ -106,17 +108,18 @@ public class LogAspect {
         log.info("}");
     }
 
-
     public void readBody(JoinPoint joinPoint) {
         try {
             // 接收到请求，记录请求内容
-            ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
+            ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder
+                    .getRequestAttributes();
             String logStr = "";
             HttpServletRequest request = attributes.getRequest();
             HttpServletResponse response = attributes.getResponse();
             // 记录下请求内容
             logStr += "URL:" + request.getRequestURI().toString() + " | ";
-            logStr += "CLASS_METHOD:" + joinPoint.getSignature().getDeclaringType().getSimpleName() + "." + joinPoint.getSignature().getName() + " | ";
+            logStr += "CLASS_METHOD:" + joinPoint.getSignature().getDeclaringType().getSimpleName() + "."
+                    + joinPoint.getSignature().getName() + " | ";
             logStr += "ARGS:";
             // joinPoint获取参数名
             String[] params = ((CodeSignature) joinPoint.getStaticPart().getSignature()).getParameterNames();

@@ -31,8 +31,9 @@ public class UploadController {
     public Result upload(@RequestParam("image")MultipartFile file) throws IOException {
         // 原始文件名称
         String name = file.getOriginalFilename();
+        String suffix = StringUtils.substringAfterLast(name, ".");
         // 生成唯一的文件名称
-        String fileName = UUID.randomUUID().toString() + "." + StringUtils.substringAfterLast(name, ".");
+        String fileName = UUID.randomUUID().toString() + "." + suffix;
         // 上传文件到 位置？ Imgtu
         String s = ImgtuUtil.uploadPic(file.getBytes(), fileName);
         if(StringUtils.isNotBlank(s)) {

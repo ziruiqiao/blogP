@@ -1,0 +1,23 @@
+server:
+  port: 8889
+
+spring:
+  application:
+    name: zirui_admin_blog
+  datasource:
+    url: jdbc:mysql://localhost:3307/blog_db?useUnicode=true&characterEncoding=UTF-8&serverTimeZone=UTC
+    username: root
+    password: 1234
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  servlet:
+    multipart:
+      max-request-size: 20MB
+      max-file-size: 2MB
+#mybatisplus
+mybatis-plus:
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+    map-underscore-to-camel-case: true
+  global-config:
+    db-config:
+      table-prefix: db_

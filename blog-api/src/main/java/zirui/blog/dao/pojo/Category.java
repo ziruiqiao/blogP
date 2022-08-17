@@ -1,7 +1,7 @@
 package zirui.blog.dao.pojo;
 
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
 import lombok.Data;
 
 /**
@@ -16,7 +16,8 @@ import lombok.Data;
  */
 @Data
 public class Category {
-    private Long id;
+    @TableId(value = "id", type = IdType.ASSIGN_ID)
+    private String id;
     private String avatar;
     private String categoryName;
     private String description;

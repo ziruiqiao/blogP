@@ -1,10 +1,6 @@
 package zirui.blog.vo;
 
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import lombok.Data;
-
-import java.util.List;
 
 /**
  * Copyright (c) 2008-2024: Zirui Qiao
@@ -18,8 +14,8 @@ import java.util.List;
  */
 @Data
 public class ArticleBodyVo {
-    @JsonSerialize(using = ToStringSerializer.class)
-    private Long id;
+    //@JsonSerialize(using = ToStringSerializer.class)
+    private String id;
     private String content;
     private String contentHtml;
 }

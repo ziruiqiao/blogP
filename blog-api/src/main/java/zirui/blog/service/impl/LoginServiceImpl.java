@@ -57,7 +57,7 @@ public class LoginServiceImpl implements LoginService {
         if(sysUser == null) {
             return Result.fail(ErrorCode.ACCOUNT_PWD_NOT_EXIST);
         }
-        String token = JWTUtils.createToken(sysUser.getId());
+        String token = JWTUtils.createToken(Long.parseLong(sysUser.getId()));
 
         redisTemplate.opsForValue().set("TOKEN_"+token, JSON.toJSONString(sysUser), 1, TimeUnit.DAYS);
 
@@ -120,7 +120,7 @@ public class LoginServiceImpl implements LoginService {
         sysUser.setStatus("");
         sysUserService.save(sysUser);
 
-        String token = JWTUtils.createToken(sysUser.getId());
+        String token = JWTUtils.createToken(Long.parseLong(sysUser.getId()));
 
         redisTemplate.opsForValue().set("TOKEN_"+token, JSON.toJSONString(sysUser), 1, TimeUnit.DAYS);
         return Result.success(token);

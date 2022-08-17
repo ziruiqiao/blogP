@@ -1,6 +1,8 @@
 package zirui.blog.util;
 
-import com.google.gson.*;
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonPrimitive;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.http.Header;
@@ -11,8 +13,6 @@ import org.apache.http.entity.mime.content.ByteArrayBody;
 import org.apache.http.entity.mime.content.ContentBody;
 import org.apache.http.entity.mime.content.StringBody;
 import org.apache.http.util.EntityUtils;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
@@ -37,8 +37,8 @@ import java.util.regex.Pattern;
 @Slf4j
 public class ImgtuUtil {
     static final String IMGTU_USER_NAME = "zirui";
-
     static final String IMGTU_PASSWORD = "q1a2z3";
+    static final String IMGTU_ALBUMID = "fpQv6";
 
     static final private String IMGTU_INIT_URL = "https://imgtu.com/init";
 
@@ -93,7 +93,7 @@ public class ImgtuUtil {
                 HttpEntity httpEntity = httpResponse.getEntity();
                 httpRawString = EntityUtils.toString(httpEntity);
             } catch (IOException e) {
-                log.error("【初始化】失败：请求页面失败。（{}）" +  e.getLocalizedMessage());
+                log.error("【初始化】失败：请求页面失败。（{}）" + e.getLocalizedMessage());
                 e.printStackTrace();
                 return false;
             }
@@ -210,7 +210,7 @@ public class ImgtuUtil {
             params.put("timestamp", new StringBody(Long.toString(System.currentTimeMillis()), ContentType.MULTIPART_FORM_DATA));
             params.put("auth_token", new StringBody(authToken, ContentType.MULTIPART_FORM_DATA));
             params.put("nsfw", new StringBody("0", ContentType.MULTIPART_FORM_DATA));
-            params.put("album_id", new StringBody("fpQv6", ContentType.MULTIPART_FORM_DATA));
+            params.put("album_id", new StringBody(IMGTU_ALBUMID, ContentType.MULTIPART_FORM_DATA));
 
             CloseableHttpResponse httpResponse = HttpUtil.multipart(IMGTU_OPERATE_URL, new HashMap<>(0), headers, params);
             String httpRawString = EntityUtils.toString(httpResponse.getEntity());
@@ -278,7 +278,7 @@ public class ImgtuUtil {
     }
 
     public static String uploadPic(byte[] bytes, String fileName) throws IOException {
-        JsonObject testFile = upload(bytes, fileName, ContentType.IMAGE_JPEG);
+        JsonObject testFile = upload(bytes, fileName, FileType.checkType(fileName));
         assert testFile != null;
         JsonObject image1 = testFile.getAsJsonObject("image");
         assert image1 != null;
@@ -286,11 +286,14 @@ public class ImgtuUtil {
         assert image != null;
         JsonPrimitive jp = image.getAsJsonPrimitive("url");
 
-        return jp.getAsString();
+        String asString = jp.getAsString();
+        log.info("short url: " + asString);
+
+        return asString;
     }
 
     public static void main(String[] args) throws IOException {
-        File img = new File("C:\\Users\\mikeq\\Pictures\\IT TAKES 2 CAPTURES\\ITTAKES TWO 1.jpg");
+        File img = new File("C:\\Users\\mikeq\\Desktop\\WeChat_20220727174850.mp4");
         String s = uploadPic(img, "testFile");
 
         log.info("s :" + s);

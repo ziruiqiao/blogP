@@ -1,5 +1,7 @@
 package zirui.blog.dao.mapper;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.springframework.stereotype.Repository;
 import zirui.blog.dao.dos.Archives;
 import zirui.blog.dao.pojo.Article;
@@ -25,4 +27,10 @@ public interface ArticleMapper extends BaseMapper<Article> {
      * @Date: 2022/7/25 15:26
      */
     List<Archives> listArchives();
+
+    IPage<Article> listArticle(Page<Article> page,
+                               Long categoryId,
+                               Long tagId,
+                               String year,
+                               String month);
 }

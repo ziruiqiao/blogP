@@ -2,6 +2,7 @@ package zirui.blog.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import zirui.blog.common.app.LogAnnotation;
 import zirui.blog.service.CommentsService;
 import zirui.blog.vo.Result;
 import zirui.blog.vo.params.CommentParam;
@@ -24,11 +25,13 @@ public class CommentsController {
     private CommentsService commentsService;
 
     @GetMapping("article/{id}")
+    @LogAnnotation(module="评论",operator="根据文章id获取所有评论")
     public Result comments(@PathVariable("id") String id) {
-        return commentsService.commentsByArticleId(Long.parseLong(id));
+        return commentsService.commentsByArticleId(id);
     }
 
     @PostMapping("create/change")
+    @LogAnnotation(module="评论",operator="添加评论")
     public Result comment(@RequestBody CommentParam commentParam){
         return commentsService.comment(commentParam);
     }
