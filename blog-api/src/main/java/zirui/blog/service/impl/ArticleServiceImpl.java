@@ -29,7 +29,7 @@ import java.util.Map;
 
 /**
  * <p>
- *  服务实现类
+ * 服务实现类
  * </p>
  *
  * @author zirui
@@ -50,20 +50,20 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
     @Autowired
     private ThreadService threadService;
     @Autowired
-    private  IArticle_tagService articleTagService;
+    private IArticle_tagService articleTagService;
 
     @Override
     public Result listArticle(PageParams pageParams) {
 
-        Page<Article> page = new Page<>(pageParams.getPage(),pageParams.getPageSize());
+        Page<Article> page = new Page<>(pageParams.getPage(), pageParams.getPageSize());
         IPage<Article> articleIPage = articleMapper.listArticle(
-                                page,
+                page,
                 StringUtils.isBlank(pageParams.getCategoryId()) ? null : Long.parseLong(pageParams.getCategoryId()),
                 StringUtils.isBlank(pageParams.getTagId()) ? null : Long.parseLong(pageParams.getTagId()),
-                                pageParams.getYear(),
-                                pageParams.getMonth());
+                pageParams.getYear(),
+                pageParams.getMonth());
         List<Article> records = articleIPage.getRecords();
-        return Result.success(copyList(records,true,true, false, true));
+        return Result.success(copyList(records, true, true, false, true));
     }
 
     @Override
@@ -167,7 +167,7 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
     @Override
     public Result delArticleById(String id) {
         int id1 = articleMapper.deleteById(Long.parseLong(id));
-        if(id1 > 0) {
+        if (id1 > 0) {
             return Result.success(null);
         } else {
             return Result.fail(ErrorCode.ARTICLE_UNEXIST);
@@ -175,7 +175,7 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
     }
 
     private List<ArticleVo> copyList(List<Article> records, boolean isTag, boolean isAuthor,
-                                     boolean isBody, boolean isCategory) {
+            boolean isBody, boolean isCategory) {
         List<ArticleVo> articleVoList = new ArrayList<>();
         records.forEach(r -> {
             articleVoList.add(copy(r, isTag, isAuthor, isBody, isCategory));
@@ -184,18 +184,18 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
     }
 
     private ArticleVo copy(Article article, boolean isTag, boolean isAuthor,
-                           boolean isBody, boolean isCategory) {
+            boolean isBody, boolean isCategory) {
         ArticleVo articleVo = new ArticleVo();
         articleVo.setId(String.valueOf(article.getId()));
         BeanUtils.copyProperties(article, articleVo, CopyUtil.getNullPropertyNames(article));
 
         articleVo.setCreateDate(new DateTime(article.getCreateDate()).toString("yyyy-MM-dd HH:mm"));
         // 并不是所有的接口都需要标签，作者信息
-        if(isTag) {
+        if (isTag) {
             List<TagVo> tagsByArticleId = tagService.findTagsByArticleId(article.getId());
             articleVo.setTags(tagsByArticleId);
         }
-        if(isAuthor) {
+        if (isAuthor) {
             String author_id = article.getAuthorId();
             Sys_user userById = sysUserService.findUserById(author_id);
             Author author = new Author();
@@ -204,11 +204,11 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
             author.setId(userById.getId());
             articleVo.setAuthor(author);
         }
-        if(isBody) {
+        if (isBody) {
             String bodyId = article.getBodyId();
             articleVo.setBody(findArticleBodyById(bodyId));
         }
-        if(isCategory) {
+        if (isCategory) {
             String categoryId = String.valueOf(article.getCategoryId());
             articleVo.setCategory(categoryService.findCategoryById(categoryId));
         }

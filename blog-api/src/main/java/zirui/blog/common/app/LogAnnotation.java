@@ -1,4 +1,4 @@
-package zirui.blog.common.app;
+package com.nart.common;
 
 
 import java.lang.annotation.*;

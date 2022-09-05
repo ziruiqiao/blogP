@@ -49,24 +49,24 @@ public class LoginServiceImpl implements LoginService {
         // （登录认证的时候，先认证token字符串是否合法，去redis认证是否存在）
         String account = loginParam.getAccount();
         String password = loginParam.getPassword();
-        if(StringUtils.isBlank(account) || StringUtils.isBlank(password)){
+        if (StringUtils.isBlank(account) || StringUtils.isBlank(password)) {
             return Result.fail(ErrorCode.PARAMS_ERROR);
         }
         password = DigestUtils.md5Hex(password + salt);
         Sys_user sysUser = sysUserService.findUser(account, password);
-        if(sysUser == null) {
+        if (sysUser == null) {
             return Result.fail(ErrorCode.ACCOUNT_PWD_NOT_EXIST);
         }
         String token = JWTUtils.createToken(Long.parseLong(sysUser.getId()));
 
-        redisTemplate.opsForValue().set("TOKEN_"+token, JSON.toJSONString(sysUser), 1, TimeUnit.DAYS);
+        redisTemplate.opsForValue().set("TOKEN_" + token, JSON.toJSONString(sysUser), 1, TimeUnit.DAYS);
 
         return Result.success(token);
     }
 
     @Override
     public Sys_user checkToken(String token) {
-        if (StringUtils.isBlank(token)){
+        if (StringUtils.isBlank(token)) {
             return null;
         }
         Map<String, Object> stringObjectMap = JWTUtils.checkToken(token);
@@ -74,7 +74,7 @@ public class LoginServiceImpl implements LoginService {
             return null;
         }
         String userJson = redisTemplate.opsForValue().get("TOKEN_" + token);
-        if(StringUtils.isBlank(userJson)) {
+        if (StringUtils.isBlank(userJson)) {
             return null;
         }
         Sys_user sysUser = JSON.parseObject(userJson, Sys_user.class);
@@ -92,17 +92,17 @@ public class LoginServiceImpl implements LoginService {
         /**
          * 1. 判断参数 是否合法
          * 2. 判断账户是否存在，
-         *  2.1 存在：返回“账户已经被注册”
-         *  2.2 不存在：
-         *   2.2.1 生成token
-         *   2.2.2 存入redis 并返回
+         * 2.1 存在：返回“账户已经被注册”
+         * 2.2 不存在：
+         * 2.2.1 生成token
+         * 2.2.2 存入redis 并返回
          * 3. 注意加上事务
          */
-        if(CopyUtil.getNullPropertyNames(loginParams).length > 0) {
+        if (CopyUtil.getNullPropertyNames(loginParams).length > 0) {
             return Result.fail(ErrorCode.PARAMS_ERROR);
         }
         Sys_user sysUser = sysUserService.findUserByAccount(loginParams.getAccount());
-        if(sysUser != null) {
+        if (sysUser != null) {
             return Result.fail(ErrorCode.ACCOUNT_EXIST);
         }
         sysUser = new Sys_user();
@@ -122,7 +122,7 @@ public class LoginServiceImpl implements LoginService {
 
         String token = JWTUtils.createToken(Long.parseLong(sysUser.getId()));
 
-        redisTemplate.opsForValue().set("TOKEN_"+token, JSON.toJSONString(sysUser), 1, TimeUnit.DAYS);
+        redisTemplate.opsForValue().set("TOKEN_" + token, JSON.toJSONString(sysUser), 1, TimeUnit.DAYS);
         return Result.success(token);
     }
 }
